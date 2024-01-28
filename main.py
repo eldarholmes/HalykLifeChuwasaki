@@ -71,20 +71,22 @@ js_factors = {
 }
 
 def op_calculator():
-    print(1)
-    print(g4f.ChatCompletion.create(
+    user_tarfs = input("Введите ваши тарифы (Справка по тарифам: https://www.halyklife.kz/storage/app/media/%20%D1%82%D0%B0%D1%80%D0%B8%D1%84%D1%8B_rus.pdf): ")
+    time.sleep(0.5)
+    tarifs = g4f.ChatCompletion.create(
         model=g4f.models.default,
         messages=[{"role": "user",
-        "content": f"Спроси иин пользователя"}],
-        proxy="http://host:port",
+        "content": f"Возьми тарифы пользователя {user_tarfs} и возьми числовые значения из этого json {js_tarfs}, ничего не говори, просто дай список числовых значений, ничего больше"}],
+        proxy="http://host:8080",
         timeout=120,
-    ))
+    )
+    
     
 
 welcome_message = g4f.ChatCompletion.create(
     model=g4f.models.default,
     messages=[{"role": "user", "content": "Представь что ты банковский консультант банка HalykBank. Начни с приветствия 'Здравствуйте! Я ваш Halyk ассистент'"}],
-    proxy="http://host:port",
+    proxy="http://host:8080",
     timeout=120,
 )
 print(welcome_message)
@@ -95,7 +97,7 @@ def responce(message):
     what = g4f.ChatCompletion.create(
         model=g4f.models.default,
         messages=[{"role": "user",
-        "content": f"Тебе даны классы запросов клиентов: {classes}. Определи к какому классу подходит данный запрос пользователя: {message}. В ответе укажи только название класса и больше ничего"}],
+        "content": f"Тебе даны классы запросов клиентов: {classes}. Определи к какому классу подходит данный запрос пользователя: {message}. В ответе укажи только название класса и больше ничего, даже дополнительных символов не нужно"}],
         proxy="http://host:8080",
         timeout=120,
     )
@@ -103,6 +105,7 @@ def responce(message):
 
 def operation(what):
     if what == classes[0]:
+        
         op_calculator()
 
 responce(answer)
