@@ -14,6 +14,7 @@ import time
 
 uri = "mongodb+srv://Cola:ungeziefer@cluster0.6qvvna5.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(uri)
+#collection = client[HalykLife]
 
 classes = ["Калькулятор цены и ценообразования страховки", "Оформление страховки", "Вопрос по поводу страхования", "Прочее", "Отмена операции"]
 
@@ -80,8 +81,22 @@ def op_calculator():
         proxy="http://host:8080",
         timeout=120,
     )
-    
-    
+    user_koefs = input("Введите ваш возраст, сколько у вас было страховых случаев и ваша профессия: ")
+    koefs = g4f.ChatCompletion.create(
+        model=g4f.models.default,
+        messages=[{"role": "user",
+        "content": f"Возьми ответы пользователя {user_koefs} и возьми числовые значения из этого json {js_factors}, ничего не говори, просто дай список числовых значений, ничего больше"}],
+        proxy="http://host:8080",
+        timeout=120,
+    )
+    halanswer = g4f.ChatCompletion.create(
+        model=g4f.models.default,
+        messages=[{"role": "user",
+        "content": f"Бери тарифы пользователя {tarifs} и его коэффициенты риска {koefs} и скажи сколько будет стоить страховка если человек возьмет ее на 10 000 тенге"}],
+        proxy="http://host:8080",
+        timeout=120,
+    )
+    print(halanswer)
 
 welcome_message = g4f.ChatCompletion.create(
     model=g4f.models.default,
