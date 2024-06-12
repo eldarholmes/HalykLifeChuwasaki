@@ -6,7 +6,7 @@ import time
 
 app = Flask(__name__)
 
-uri = "mongodb+srv://Cola:ungeziefer@cluster0.6qvvna5.mongodb.net/?retryWrites=true&w=majority"
+uri = os.getenv('MONGO_KEY')
 client = MongoClient(uri)
 collection = client["Chuwasaki"]["HalykLife"]
 
